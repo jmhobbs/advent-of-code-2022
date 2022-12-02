@@ -2,6 +2,9 @@
 	"name": "advent-of-code-2022",
 	"version": "1.0.0",
 	"description": "Attempting Advent of Code 2022 in TypeScript",
+	"engines": {
+		"node": ">=16.0.0"
+	},
 	"scripts": {
 		"build": "esbuild src/main.ts --bundle --outfile=main.js",
 		"check": "tsc",
