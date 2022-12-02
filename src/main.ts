@@ -1,28 +1,19 @@
 import blessed from 'blessed';
 
-import { A as dayOnePartA, B as dayOnePartB } from './01/solve';
+import * as DayOne from './01/solve';
+
+type Solver = (path?: string) => Promise<string>;
 
 interface Day {
-	a: any;
-	b?: any;
+	A: Solver;
+	B?: Solver;
 }
 
 const screen = blessed.screen({ smartCSR: true });
 
 screen.title = 'Advent of Code 2022';
 
-const days: Day[] = [
-	{
-		a: {
-			fn: dayOnePartA,
-			str: '% Calories',
-		},
-		b: {
-			fn: dayOnePartB,
-			str: '% Calories',
-		},
-	},
-];
+const days: Day[] = [DayOne];
 
 const list = blessed.list({
 	top: 'center',
@@ -42,7 +33,7 @@ const list = blessed.list({
 	items: days
 		.map((day, index) => {
 			const items = [`Day ${index + 1}`, `Day ${index + 1} - Part A`];
-			if (day.b) {
+			if (day.B) {
 				items.push(`Day ${index + 1} - Part B`);
 			}
 			return items;
@@ -79,15 +70,14 @@ list.on('action', async (selected) => {
 	screen.render();
 	boxShown = true;
 
+	const { A, B } = days[day - 1];
+
 	if (item.indexOf('-') === -1) {
 		// whole day
-		box.setContent('A: ' + days[day - 1].a.str.replace('%', await days[day - 1].a.fn()));
+		box.setContent('A: ' + (await A()));
 		screen.render();
-
-		if (days[day - 1].b) {
-			box.setContent(
-				box.content + '\nB: ' + days[day - 1].b.str.replace('%', await days[day - 1].b.fn())
-			);
+		if (B) {
+			box.setContent(box.content + '\nB: ' + (await B()));
 		} else {
 			box.setContent(box.content + '\nB: Not Completed');
 		}
@@ -96,10 +86,12 @@ list.on('action', async (selected) => {
 		// single part
 		const part = item.slice(item.indexOf('Part ') + 5);
 		if (part === 'A') {
-			box.setContent(days[day - 1].a.str.replace('%', await days[day - 1].a.fn()));
+			box.setContent('A: ' + (await A()));
 			screen.render();
 		} else {
-			box.setContent(days[day - 1].b.str.replace('%', await days[day - 1].b.fn()));
+			if (B) {
+				box.setContent('B: ' + (await B()));
+			}
 			screen.render();
 		}
 	}
@@ -112,8 +104,6 @@ screen.key(['escape'], () => {
 		screen.remove(box);
 		screen.render();
 		boxShown = false;
-	} else {
-		return process.exit(0);
 	}
 });
 
