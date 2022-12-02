@@ -1,0 +1,47 @@
+{
+	"name": "advent-of-code-2022",
+	"version": "1.0.0",
+	"description": "Attempting Advent of Code 2022 in TypeScript",
+	"scripts": {
+		"build": "esbuild src/main.ts --bundle --outfile=main.js",
+		"check": "tsc",
+		"start": "tsx src/main.ts",
+		"lint": "run-s 'lint:*'",
+		"lint:eslint": "eslint . --ext .ts",
+		"lint:format": "prettier --check 'src/**/*.ts'",
+		"test": "c8 --reporter=lcov --reporter=text ava",
+		"dev:run": "tsx src/main.ts",
+		"dev:test": "ava --watch",
+		"prepare": "run-s lint check test build"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"devDependencies": {
+		"@ava/typescript": "^3.0.1",
+		"@types/blessed": "^0.1.19",
+		"@types/node": "^18.11.10",
+		"@typescript-eslint/eslint-plugin": "^5.45.0",
+		"@typescript-eslint/parser": "^5.45.0",
+		"ava": "^5.1.0",
+		"blessed": "^0.1.81",
+		"c8": "^7.12.0",
+		"eslint": "^8.28.0",
+		"eslint-plugin-ava": "^13.2.0",
+		"npm-run-all": "^4.1.5",
+		"prettier": "^2.8.0",
+		"tsx": "^3.12.1",
+		"typescript": "^4.9.3"
+	},
+	"ava": {
+		"files": [
+			"./**/*.test.ts"
+		],
+		"extensions": [
+			"ts"
+		],
+		"require": [
+			"@esbuild-kit/cjs-loader"
+		]
+	}
+}

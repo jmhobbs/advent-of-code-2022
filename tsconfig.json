@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"incremental": true,
+		"target": "es2019",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"noEmit": true
+	},
+	"include": [
+		"src/**/*"
+	]
+}
