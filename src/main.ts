@@ -1,6 +1,7 @@
 import blessed from 'blessed';
 
 import * as DayOne from './01/solve';
+import * as DayTwo from './02/solve';
 
 type Solver = (path?: string) => Promise<string>;
 
@@ -13,7 +14,7 @@ const screen = blessed.screen({ smartCSR: true });
 
 screen.title = 'Advent of Code 2022';
 
-const days: Day[] = [DayOne];
+const days: Day[] = [DayOne, DayTwo];
 
 const list = blessed.list({
 	top: 'center',
