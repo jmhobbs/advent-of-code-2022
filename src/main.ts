@@ -1,6 +1,6 @@
 import blessed from 'blessed';
 
-import { solve as dayOnePartA } from './01/a';
+import { A as dayOnePartA, B as dayOnePartB } from './01/solve';
 
 interface Day {
 	a: any;
@@ -15,6 +15,10 @@ const days: Day[] = [
 	{
 		a: {
 			fn: dayOnePartA,
+			str: '% Calories',
+		},
+		b: {
+			fn: dayOnePartB,
 			str: '% Calories',
 		},
 	},
@@ -44,7 +48,6 @@ const list = blessed.list({
 			return items;
 		})
 		.flat(),
-	mouse: true,
 	keys: true,
 });
 

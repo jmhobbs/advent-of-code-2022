@@ -6,7 +6,7 @@
 		"node": ">=16.0.0"
 	},
 	"scripts": {
-		"build": "esbuild src/main.ts --bundle --outfile=main.js",
+		"build": "esbuild src/main.ts --bundle --platform=node --external:blessed --outfile=dist/main.js",
 		"check": "tsc",
 		"start": "tsx src/main.ts",
 		"lint": "run-s 'lint:*'",
