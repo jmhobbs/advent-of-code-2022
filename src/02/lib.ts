@@ -1,4 +1,3 @@
-import { match } from 'node:assert';
 import readline from 'node:readline';
 
 export enum Play {
@@ -9,19 +8,16 @@ export enum Play {
 
 export interface Match {
 	opponent: Play;
-	player: Play;
+	player: string;
 }
 
-function getPlay(p: string): Play {
+function toPlay(p: string): Play {
 	switch (p) {
 		case 'A':
-		case 'X':
 			return Play.Rock;
 		case 'B':
-		case 'Y':
 			return Play.Paper;
 		case 'C':
-		case 'Z':
 			return Play.Scissor;
 	}
 	throw new Error(`invalid play: ${p}`);
@@ -35,8 +31,8 @@ export async function parseInput(input: NodeJS.ReadableStream): Promise<Match[]>
 	for await (const line of rl) {
 		if (line !== '') {
 			results.push({
-				opponent: getPlay(line[0]),
-				player: getPlay(line[2]),
+				opponent: toPlay(line[0]),
+				player: line[2],
 			});
 		}
 	}
@@ -50,20 +46,26 @@ enum Result {
 	Win = 6,
 }
 
-export function score(match: Match): number {
+type GetPlay = (m: Match) => Play;
+
+export function totalScore(matches: Match[], getPlay: GetPlay): number {
+	return matches.map((m: Match) => score(m.opponent, getPlay(m))).reduce((pv, cv) => pv + cv, 0);
+}
+
+export function score(opponent: Play, player: Play): number {
 	let result: Result = Result.Loss;
 
-	if (match.opponent === match.player) {
+	if (opponent === player) {
 		result = Result.Draw;
 	} else {
 		if (
-			(match.opponent === Play.Rock && match.player === Play.Paper) ||
-			(match.opponent === Play.Paper && match.player === Play.Scissor) ||
-			(match.opponent === Play.Scissor && match.player === Play.Rock)
+			(opponent === Play.Rock && player === Play.Paper) ||
+			(opponent === Play.Paper && player === Play.Scissor) ||
+			(opponent === Play.Scissor && player === Play.Rock)
 		) {
 			result = Result.Win;
 		}
 	}
 
-	return match.player + result;
+	return player + result;
 }

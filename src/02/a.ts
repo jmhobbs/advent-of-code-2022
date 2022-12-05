@@ -1,5 +1,13 @@
-import { Match, score } from './lib';
+import { Match, Play } from './lib';
 
-export function totalScore(matches: Match[]): number {
-	return matches.map((m: Match) => score(m)).reduce((pv, cv) => pv + cv, 0);
+export function getPlay(m: Match): Play {
+	switch (m.player) {
+		case 'X':
+			return Play.Rock;
+		case 'Y':
+			return Play.Paper;
+		case 'Z':
+			return Play.Scissor;
+	}
+	throw new Error(`invalid play: ${m.player}`);
 }

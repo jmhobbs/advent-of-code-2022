@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import { getPlay } from './a';
+import { getPlay } from './b';
 import { Play } from './lib';
 
 test('getPlay', (t) => {
@@ -9,20 +9,20 @@ test('getPlay', (t) => {
 			opponent: Play.Rock,
 			player: 'X',
 		}),
-		Play.Rock
+		Play.Scissor
 	);
 	t.is(
 		getPlay({
 			opponent: Play.Rock,
 			player: 'Y',
 		}),
-		Play.Paper
+		Play.Rock
 	);
 	t.is(
 		getPlay({
 			opponent: Play.Rock,
 			player: 'Z',
 		}),
-		Play.Scissor
+		Play.Paper
 	);
 });
