@@ -14,8 +14,7 @@
 		"lint:format": "prettier --check 'src/**/*.ts'",
 		"test": "c8 --reporter=lcov --reporter=text ava",
 		"dev:run": "tsx src/main.ts",
-		"dev:test": "ava --watch",
-		"prepare": "run-s lint check test build"
+		"dev:test": "ava --watch"
 	},
 	"keywords": [],
 	"author": "",

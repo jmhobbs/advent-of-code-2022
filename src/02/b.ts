@@ -17,5 +17,5 @@ export function getPlay(m: Match): Play {
 				[Play.Scissor]: Play.Rock,
 			}[m.opponent];
 	}
-	throw new Error(`invalid play: ${p}`);
+	throw new Error(`invalid play: ${m.player}`);
 }
