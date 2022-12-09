@@ -3,6 +3,7 @@ import blessed from 'blessed';
 import * as DayOne from './01/solve';
 import * as DayTwo from './02/solve';
 import * as DayThree from './03/solve';
+import * as DayFour from './04/solve';
 
 type Solver = (path?: string) => Promise<string>;
 
@@ -15,7 +16,7 @@ const screen = blessed.screen({ smartCSR: true });
 
 screen.title = 'Advent of Code 2022';
 
-const days: Day[] = [DayOne, DayTwo, DayThree];
+const days: Day[] = [DayOne, DayTwo, DayThree, DayFour];
 
 const list = blessed.list({
 	top: 'center',
@@ -74,28 +75,54 @@ list.on('action', async (selected) => {
 
 	const { A, B } = days[day - 1];
 
-	if (item.indexOf('-') === -1) {
-		// whole day
-		box.setContent('A: ' + (await A()));
-		screen.render();
-		if (B) {
-			box.setContent(box.content + '\nB: ' + (await B()));
-		} else {
-			box.setContent(box.content + '\nB: Not Completed');
-		}
-		screen.render();
-	} else {
-		// single part
-		const part = item.slice(item.indexOf('Part ') + 5);
-		if (part === 'A') {
+	try {
+		if (item.indexOf('-') === -1) {
+			// whole day
 			box.setContent('A: ' + (await A()));
 			screen.render();
-		} else {
 			if (B) {
-				box.setContent('B: ' + (await B()));
+				box.setContent(box.content + '\nB: ' + (await B()));
+			} else {
+				box.setContent(box.content + '\nB: Not Completed');
 			}
 			screen.render();
+		} else {
+			// single part
+			const part = item.slice(item.indexOf('Part ') + 5);
+			if (part === 'A') {
+				box.setContent('A: ' + (await A()));
+				screen.render();
+			} else {
+				if (B) {
+					box.setContent('B: ' + (await B()));
+				}
+				screen.render();
+			}
 		}
+	} catch (err) {
+		const errBox = blessed.box({
+			top: 'center',
+			left: 'center',
+			width: '25%',
+			height: '25%',
+			tags: true,
+			shrink: true,
+			border: {
+				type: 'line',
+			},
+			style: {
+				bg: 'red',
+				fg: 'white',
+				border: {
+					fg: 'yellow',
+					bg: 'red',
+				},
+			},
+			shadow: true,
+			content: err.toString(),
+		});
+		screen.append(errBox);
+		screen.render();
 	}
 });
 
