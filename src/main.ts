@@ -16,7 +16,7 @@ const screen = blessed.screen({ smartCSR: true });
 
 screen.title = 'Advent of Code 2022';
 
-const days: Day[] = [DayOne, DayTwo, DayThree, DayFour];
+const days: Day[] = [DayOne, DayTwo, DayThree, DayFour].reverse();
 
 const list = blessed.list({
 	top: 'center',
@@ -35,9 +35,10 @@ const list = blessed.list({
 	},
 	items: days
 		.map((day, index) => {
-			const items = [`Day ${index + 1}`, `Day ${index + 1} - Part A`];
+			const dayNumber = days.length - index;
+			const items = [`Day ${dayNumber}`, `Day ${dayNumber} - Part A`];
 			if (day.B) {
-				items.push(`Day ${index + 1} - Part B`);
+				items.push(`Day ${dayNumber} - Part B`);
 			}
 			return items;
 		})
@@ -57,6 +58,12 @@ const box = blessed.box({
 	border: {
 		type: 'line',
 	},
+	padding: {
+		top: 1,
+		bottom: 1,
+		left: 2,
+		right: 2,
+	},
 	shadow: true,
 	content: 'Loading...',
 });
@@ -73,7 +80,7 @@ list.on('action', async (selected) => {
 	screen.render();
 	boxShown = true;
 
-	const { A, B } = days[day - 1];
+	const { A, B } = days[days.length - day];
 
 	try {
 		if (item.indexOf('-') === -1) {
@@ -119,7 +126,7 @@ list.on('action', async (selected) => {
 				},
 			},
 			shadow: true,
-			content: err.toString(),
+			content: (err as Error).toString(),
 		});
 		screen.append(errBox);
 		screen.render();
